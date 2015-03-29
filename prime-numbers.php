@@ -7,6 +7,11 @@
 ini_set('display_errors', 1); 
 error_reporting(E_ALL);
 
+function remove_multiples(&$array, &$e) {
+  $array = array_diff($array, array($array[$e]));
+  $array = array_values($array);
+}
+
 function find_primes($num) {
   $prime_array = array();
 
@@ -16,10 +21,9 @@ function find_primes($num) {
 
   $p = 2;
 
-  for($i = 2; $i <= $num; $i++) {
+  for($i = 2; $i < $num; $i++) {
     if(($i != $p) && ($i % $p == 0)) {
-      $prime_array = array_diff($prime_array, array($prime_array[$i]));
-      $prime_array = array_values($prime_array);
+      remove_multiples($prime_array, $i);
     }
 
     if($i > $p) {
@@ -28,8 +32,7 @@ function find_primes($num) {
 
     for($j = 0; $j <= count($prime_array) - 1; $j++) {
       if(($prime_array[$j] != $p) && (($prime_array[$j] % $p) == 0)) {
-        $prime_array = array_diff($prime_array, array($prime_array[$j]));
-        $prime_array = array_values($prime_array);
+        remove_multiples($prime_array, $j);
       }
     }
   }
